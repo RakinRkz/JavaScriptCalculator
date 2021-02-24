@@ -65,7 +65,7 @@ class Calculator
   
     calculate() 
     {
-      let result;
+      var result;
       const prev = parseFloat(this.previousOperand);
       const current = parseFloat(this.currentOperand);
       if (isNaN(prev) || isNaN(current)) 
@@ -94,6 +94,47 @@ class Calculator
       this.previousOperand = '';
       
     }  
+
+    specialOps(special)
+    {
+      // console.log(special);
+      let result;
+      const ans = parseFloat(this.currentOperand);
+      if(isNaN(ans))
+      return;
+
+      switch (special) 
+      {
+        case 'x!':
+        result = 1;
+        for(var i=ans; i>0; i--)
+        result *= i;
+        this.previousOperandText.innerText = `${this.currentOperand}!`;
+        break;
+
+        case 'x^2':
+        result = ans*ans;
+        this.previousOperandText.innerText = `${this.currentOperand}^2`;
+        break;
+
+        case '%':
+        result = ans/100;
+        // if(isNaN(result))
+        // return;
+        this.previousOperandText.innerText += `%`
+        break;
+
+        case '√':
+        result = Math.sqrt(ans);
+        this.previousOperandText.innerText = `√${this.currentOperand}`
+        break;
+
+        default:
+        return;
+      }
+      // console.log(this.previousOperandText.innerText);
+      this.currentOperand = result;
+    }
   
     updateDisplay() 
     {
@@ -103,10 +144,6 @@ class Calculator
         this.previousOperandText.innerText =
         `${this.getDisplayNumber(this.previousOperand)} ${this.operation}`;
       } 
-      // else 
-      // {
-      //   this.previousOperandText.innerText = '' ;
-      // }
     }
 }
   
@@ -118,6 +155,7 @@ const deleteButton = document.querySelector('[data-delete]');
 const allClearButton = document.querySelector('[data-all-clear]');
 const previousOperandText = document.querySelector('[data-previous-operand]');
 const currentOperandText = document.querySelector('[data-current-operand]');
+const specialButtons = document.querySelectorAll('[data-special]');
 
 const calculator = new Calculator(previousOperandText, currentOperandText);
 
@@ -135,10 +173,20 @@ button.addEventListener('click', () => {
 })
 })
 
+specialButtons.forEach(button => 
+  {
+    button.addEventListener('click', () =>{
+      calculator.calculate();
+      calculator.specialOps(button.innerText);
+      calculator.updateDisplay();
+    })
+  })
+
 equalsButton.addEventListener('click', button => {
     calculator.calculate()
     calculator.updateDisplay()
 })
+
 
 allClearButton.addEventListener('click', button => {
     calculator.clear()
