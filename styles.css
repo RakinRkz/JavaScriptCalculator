@@ -19,7 +19,7 @@ body
     align-content: center;
     min-height: 100vh;
     grid-template-columns: repeat(4, 100px);
-    grid-template-rows: minmax(150px, auto) repeat(5, 100px);
+    grid-template-rows: minmax(150px, auto) repeat(6, 90px);
 }
 
 .calculator-grid > button
@@ -35,7 +35,12 @@ body
 
 .calculator-grid > button:hover
 {
-    background-color: rgb(67, 233, 12);
+    background-color: teal;
+}
+
+.calculator-grid > button:active
+{
+    background:rgba(67, 233, 12, 100);
 }
 
 .span-two
